@@ -38,3 +38,7 @@ python manage.py createsuperuser
 
 ## Important
 This project is designed to run cleanly with SQLite by default. The ML model is trained from a built-in sample training dataset and saved automatically on first prediction or when demo data is seeded.
+
+# Web Page Image
+
+Web Page.png
