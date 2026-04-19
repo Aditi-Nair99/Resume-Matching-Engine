@@ -1,4 +1,7 @@
-<img width="948" height="438" alt="Web Page" src="https://github.com/user-attachments/assets/cae6c02f-d276-4d47-8157-e8041014b420" /><img width="948" height="438" alt="Web Page" src="https://github.com/user-attachments/assets/b5409ffe-2dbf-4002-b236-187789564ce9" />🚀 Resume & Skill Matching Engine
+<img width="948" height="438" alt="Web Page" src="https://github.com/user-attachments/assets/cae6c02f-d276-4d47-8157-e8041014b420" />
+
+🚀 Resume & Skill Matching Engine
+
 📌 Project Overview
 
 The Resume & Skill Matching Engine is an intelligent system that automates the process of matching candidate resumes with the most suitable job roles.
