@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Matching Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'matcher/css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="site-bg"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="rotating-ring ring-a"></div>
+    <div class="rotating-ring ring-b"></div>
+    <div class="particles" aria-hidden="true"></div>
+
+    <div class="page-shell">
+        <nav class="navbar glass">
+            <a href="{% url 'home' %}" class="brand-block">
+                <div class="brand-mark">AI</div>
+                <div>
+                    <h2 class="brand">Resume Matching Engine</h2>
+                    <p class="subbrand">AI Recruitment • Role Prediction • Resume Analytics</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'history' %}">History</a>
+                <a href="/admin/">Admin</a>
+            </div>
+        </nav>
+
+        {% if messages %}
+            <div class="message-wrapper container">
+                {% for message in messages %}
+                    <div class="message-card">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+        <footer class="footer container glass">
+            <div>
+                <h3>Resume Matching Engine</h3>
+                <p>Smart, visual, and portfolio-ready AI recruitment interface built with Django and ML role matching.</p>
+            </div>
+            <div class="footer-links">
+                <a href="{% url 'home' %}">Upload Resume</a>
+                <a href="{% url 'history' %}">Candidate History</a>
+                <a href="/admin/">Database Admin</a>
+            </div>
+        </footer>
+    </div>
+
+    <div id="analysisOverlay" class="analysis-overlay" hidden>
+        <div class="analysis-box glass">
+            <div class="scanner"></div>
+            <div class="loader-ring"></div>
+            <div class="ai-bot">
+                <span></span><span></span><span></span>
+            </div>
+            <h3>Analyzing Resume...</h3>
+            <p>Extracting skills, matching roles, and generating AI-powered fit scores.</p>
+        </div>
+    </div>
+
+    <script src="{% static 'matcher/js/dashboard.js' %}"></script>
+</body>
+</html>

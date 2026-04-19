@@ -1,0 +1,184 @@
+{% extends 'matcher/base.html' %}
+{% block content %}
+<section class="hero container">
+    <div class="hero-copy glass">
+        <span class="pill">Premium AI Recruitment UI</span>
+        <h1 class="hero-title">Resume Matching Engine</h1>
+        <p class="hero-tagline">Find the Best Role Match from a Resume</p>
+        <p class="hero-text">Upload a candidate resume, extract the most relevant skills, compare it against trained ML role models, and instantly show the best-fit internship role with dynamic visual analytics.</p>
+
+        <div class="hero-actions">
+            <a href="#upload-section" class="primary-btn">Analyze Resume</a>
+            <a href="#dashboard-section" class="secondary-btn">View Dashboard</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="mini-card">
+                <strong>{{ stats.total_candidates }}</strong>
+                <span>Profiles Analyzed</span>
+            </div>
+            <div class="mini-card">
+                <strong>Top 5</strong>
+                <span>Role Match Output</span>
+            </div>
+            <div class="mini-card">
+                <strong>ML + Rules</strong>
+                <span>Smart Prediction Flow</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-visual glass">
+        <div class="assistant-badge">
+            <div class="assistant-core"></div>
+            <div class="assistant-pulse pulse-1"></div>
+            <div class="assistant-pulse pulse-2"></div>
+        </div>
+        <div class="floating-panel panel-top">
+            <span>AI Assistant</span>
+            <strong>Role Prediction Ready</strong>
+        </div>
+        <div class="floating-panel panel-middle">
+            <span>Live Match Demo</span>
+            <strong>Data Analytics Intern</strong>
+            <small>85% confidence</small>
+        </div>
+        <div class="role-bars-preview">
+            {% for row in demo_roles %}
+            <div class="role-line">
+                <div class="role-line-head">
+                    <span>{{ row.role }}</span>
+                    <strong>{{ row.score }}%</strong>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: {{ row.score }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="upload-section" class="upload-section container">
+    <div class="section-title-row">
+        <div>
+            <span class="pill">Resume Upload</span>
+            <h2>Upload a candidate resume</h2>
+        </div>
+        <p>Drag and drop the resume or browse from your device to run the analysis engine.</p>
+    </div>
+
+    <div class="upload-layout">
+        <div class="upload-card glass">
+            <form method="post" action="{% url 'analyze_resume' %}" enctype="multipart/form-data" class="upload-form" id="resumeUploadForm">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div>
+                        <label>Candidate Name</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div>
+                        <label>Email Address</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label>Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+                </div>
+
+                <div class="dropzone" id="dropzone">
+                    {{ form.resume }}
+                    <div class="dropzone-content">
+                        <div class="upload-icon">⬆</div>
+                        <h3>Drop resume here</h3>
+                        <p>PDF, DOCX, or TXT</p>
+                        <button type="button" class="secondary-btn browse-trigger" id="browseTrigger">Browse File</button>
+                        <small id="fileNameLabel">No file selected</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn full-btn">Analyze Resume</button>
+            </form>
+        </div>
+
+        <div class="upload-side-panel glass">
+            <div class="highlight-card best-role-preview">
+                <span class="small-label">Best Role Spotlight</span>
+                <h3>AI Recruitment Intelligence</h3>
+                <p>Once the resume is analyzed, the best-fit role appears in a glowing card with match score, key skills, and alternate role suggestions.</p>
+            </div>
+
+            <div class="skill-cloud">
+                <span>Python</span>
+                <span>SQL</span>
+                <span>Django</span>
+                <span>Power BI</span>
+                <span>Recruitment</span>
+                <span>Figma</span>
+                <span>SEO</span>
+                <span>Analytics</span>
+                <span>JavaScript</span>
+                <span>Communication</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="dashboard-section" class="dashboard-showcase container">
+    <div class="section-title-row compact">
+        <div>
+            <span class="pill">Interactive Analytics</span>
+            <h2>Skill match dashboard preview</h2>
+        </div>
+        <p>Animated charts make the website feel like a premium AI-powered recruitment platform.</p>
+    </div>
+
+    <div class="dashboard container no-pad">
+        <div class="card glass chart-card chart-card-large">
+            <div class="card-header">
+                <h3>Candidate Growth</h3>
+                <span class="soft-text">Animated trend graph</span>
+            </div>
+            <canvas id="growthChart" data-points='{{ stats.growth_points|safe }}'></canvas>
+        </div>
+        <div class="card glass chart-card">
+            <div class="card-header">
+                <h3>Best Role Distribution</h3>
+                <span class="soft-text">Live role split</span>
+            </div>
+            <canvas id="roleChart" data-points='{{ stats.role_counts|safe }}'></canvas>
+        </div>
+        <div class="card glass chart-card">
+            <div class="card-header">
+                <h3>Fit Score Buckets</h3>
+                <span class="soft-text">Role confidence</span>
+            </div>
+            <canvas id="scoreChart" data-points='{{ stats.score_distribution|safe }}'></canvas>
+        </div>
+    </div>
+</section>
+
+<section class="container latest-section">
+    <div class="section-head">
+        <h2>Recently analyzed candidates</h2>
+        <a href="{% url 'history' %}">Open history</a>
+    </div>
+    <div class="candidate-grid">
+        {% for candidate in latest_candidates %}
+        <a class="candidate-card glass" href="{% url 'candidate_detail' candidate.pk %}">
+            <div class="candidate-card-top">
+                <div>
+                    <h3>{{ candidate.full_name }}</h3>
+                    <p>{{ candidate.best_role }}</p>
+                </div>
+                <span class="score-badge">{{ candidate.best_score|floatformat:1 }}%</span>
+            </div>
+            <div class="candidate-card-glow"></div>
+        </a>
+        {% empty %}
+        <div class="candidate-card glass empty-card"><p>No candidates yet. Upload a resume to create the first prediction.</p></div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

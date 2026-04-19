@@ -1,0 +1,125 @@
+{% extends 'matcher/base.html' %}
+{% block content %}
+<section class="container result-hero glass">
+    <div class="result-copy">
+        <span class="pill">Analysis Complete</span>
+        <h1>{{ candidate.full_name }}</h1>
+        <p class="hero-text">The resume has been parsed and matched against the trained role models. The glowing card highlights the strongest recommendation.</p>
+
+        <div class="candidate-meta-grid">
+            <div class="info-tile glass-lite">
+                <span>Candidate Name</span>
+                <strong>{{ candidate.full_name }}</strong>
+            </div>
+            <div class="info-tile glass-lite">
+                <span>Best Matched Role</span>
+                <strong>{{ candidate.best_role }}</strong>
+            </div>
+            <div class="info-tile glass-lite">
+                <span>Match Percentage</span>
+                <strong>{{ candidate.best_score|floatformat:1 }}%</strong>
+            </div>
+        </div>
+
+        <div class="skill-tags-wrap">
+            <h3>Extracted Key Skills</h3>
+            <div class="skill-cloud skill-cloud-result">
+                {% for skill in extracted_skills %}
+                    <span>{{ skill|title }}</span>
+                {% empty %}
+                    <span>Communication</span>
+                    <span>Internship</span>
+                    <span>Fresher</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="best-role-card glass spotlight-card">
+        <div class="spotlight-top">
+            <span class="small-label">Best Role Match</span>
+            <div class="ai-chip">AI Smart Match</div>
+        </div>
+        <h2>{{ best_match.role_name }}</h2>
+        <p>{{ best_match.recommendation }}</p>
+        <div class="progress-ring large glow-ring" style="--percent: {{ best_match.score|floatformat:0 }};">
+            <span>{{ best_match.score|floatformat:1 }}%</span>
+        </div>
+        <a href="{% url 'home' %}" class="secondary-btn wide-btn">Analyze Another Resume</a>
+    </div>
+</section>
+
+<section class="container result-grid">
+    <div class="glass result-panel">
+        <div class="section-head alt-head">
+            <h2>Other possible role matches</h2>
+        </div>
+        <div class="alt-role-list">
+            {% for row in other_roles %}
+            <div class="alt-role-item">
+                <div class="alt-role-copy">
+                    <strong>{{ row.role_name }}</strong>
+                    <span>{{ row.recommendation }}</span>
+                </div>
+                <div class="alt-role-progress">
+                    <div class="mini-bar-track">
+                        <div class="mini-bar-fill" style="width: {{ row.score }}%"></div>
+                    </div>
+                    <strong>{{ row.score|floatformat:1 }}%</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="glass result-panel visual-panel">
+        <div class="section-head alt-head">
+            <h2>Role match visualization</h2>
+        </div>
+        <div class="ring-grid compact-rings">
+            {% for row in top_roles %}
+            <div class="ring-card glass-lite">
+                <div class="progress-ring glow-ring" style="--percent: {{ row.score|floatformat:0 }};">
+                    <span>{{ row.score|floatformat:0 }}%</span>
+                </div>
+                <h3>{{ row.role_name }}</h3>
+                <p>{{ row.recommendation }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-showcase container no-top-gap">
+    <div class="section-title-row compact">
+        <div>
+            <span class="pill">Dashboard View</span>
+            <h2>Interactive graphs and charts</h2>
+        </div>
+        <p>These graphs make the engine feel like a real AI hiring dashboard for demonstrations and portfolio showcases.</p>
+    </div>
+
+    <div class="dashboard container no-pad">
+        <div class="card glass chart-card chart-card-large">
+            <div class="card-header"><h3>Candidate Growth</h3><span class="soft-text">Animated line chart</span></div>
+            <canvas id="growthChart" data-points='{{ stats.growth_points|safe }}'></canvas>
+        </div>
+        <div class="card glass chart-card">
+            <div class="card-header"><h3>Role Distribution</h3><span class="soft-text">Best matched roles</span></div>
+            <canvas id="roleChart" data-points='{{ stats.role_counts|safe }}'></canvas>
+        </div>
+        <div class="card glass chart-card">
+            <div class="card-header"><h3>Score Analysis</h3><span class="soft-text">Confidence spread</span></div>
+            <canvas id="scoreChart" data-points='{{ stats.score_distribution|safe }}'></canvas>
+        </div>
+    </div>
+</section>
+
+<section class="container glass text-preview">
+    <div class="section-head">
+        <h2>Extracted Resume Text Preview</h2>
+        <a href="{% url 'history' %}">Back to history</a>
+    </div>
+    <pre>{{ candidate.extracted_text|truncatechars:2500 }}</pre>
+</section>
+{% endblock %}

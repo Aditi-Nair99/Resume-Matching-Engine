@@ -1,61 +1,40 @@
-<img width="948" height="438" alt="Web Page" src="https://github.com/user-attachments/assets/cae6c02f-d276-4d47-8157-e8041014b420" />
+# Resume Matching Engine - Django Web App
 
-🚀 Resume & Skill Matching Engine
+A Django-based Resume Matching Engine with an interactive bluish-purple UI, animated charts, circular role fit indicators, SQLite database support, and an ML-based role recommendation flow.
 
-📌 Project Overview
+## Features
+- Upload candidate resumes in PDF, DOCX, or TXT format
+- Extract resume text automatically
+- Predict **Top 3 best-fit roles** using a trained ML pipeline
+- Show role-fit percentages in animated circular cards
+- Store candidates and predictions in SQLite database
+- Admin panel support
+- Dashboard with moving charts and role analytics
+- Bluish-purple modern UI with glow effects
 
-The Resume & Skill Matching Engine is an intelligent system that automates the process of matching candidate resumes with the most suitable job roles.
+## Roles Covered
+- Data Analytics Intern
+- Web Development Intern
+- Graphic Design Intern
+- Digital Marketing Intern
+- HR/Operations Intern
 
-Instead of manually reading hundreds of resumes, this system:
-✔ Extracts candidate details
-✔ Matches skills with job requirements
-✔ Predicts the best-fit role using Machine Learning
+## Quick Start
+```bash
+python -m venv venv
+venv\Scriptsctivate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py seed_demo_data
+python manage.py runserver
+```
 
-✨ Key Features
+Open: `http://127.0.0.1:8000/`
 
-🔍 Resume Data Extraction
+Admin login:
+```bash
+python manage.py createsuperuser
+```
 
-Extracts skills, education, tools, experience, certifications
-
-📊 Rule-Based Matching
-
-Calculates skill match percentage
-Classifies candidates into:
-🟢 Strong Fit
-🟡 Moderate Fit
-🔴 Low Fit
-
-🤖 Machine Learning Prediction
-
-Predicts the most suitable role
-Generates Fit Score (0–100)
-
-📈 Dashboard Visualization
-
-Displays Top 3 role recommendations
-Shows candidate fit scores
-
-🧠 Tech Stack
-Category	Tools Used
-Language	Python
-Data Processing	Pandas, NumPy
-Machine Learning	Scikit-learn
-Visualization	Power BI / Excel
-Other	Regex, NLP Basics
-
-⚙️ Project Workflow
-graph TD
-A[Resumes] --> B[Text Extraction]
-B --> C[Structured Dataset]
-C --> D[Rule-Based Matching]
-D --> E[Feature Engineering]
-E --> F[ML Model]
-F --> G[Role Prediction]
-G --> H[Dashboard]
-
-🎯 Business Impact
-
-✔ Reduces manual resume screening time
-✔ Improves candidate-role matching accuracy
-✔ Helps HR make faster decisions
-✔ Scalable solution for large hiring processes
+## Important
+This project is designed to run cleanly with SQLite by default. The ML model is trained from a built-in sample training dataset and saved automatically on first prediction or when demo data is seeded.
